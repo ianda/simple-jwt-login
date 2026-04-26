@@ -1,0 +1,31 @@
+services:
+  mariadb:
+    image: docker.io/mariadb:noble
+    command: '--default-authentication-plugin=mysql_native_password'
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Wo4wZ3fE
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wp_91985
+    expose:
+      - 3306
+      - 33060
+  wordpress-simple-jwt-login:
+    build: .
+    ports:
+      - 8080:80
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: mariadb
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wp_91985
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DEBUG: 1
+    volumes:
+      - ../:/var/www/html/wp-content/plugins/simple-jwt-login
+volumes:
+  db_data:
+  wordpress:
