@@ -14,7 +14,19 @@ add_filter(
         $jwtSettings = new SimpleJWTLoginSettings(new WordPressData());
         $namespace   = $jwtSettings->getGeneralSettings()->getRouteNamespace();
 
-        if (strpos($requestUri, '/' . ltrim($namespace, '/')) !== false) {
+        $namespacePath = '/' . ltrim($namespace, '/');
+
+        if (strpos($requestUri, $namespacePath) !== false) {
+            return false;
+        }
+
+        // Also handle the case where the route is passed as a POST/GET parameter
+        // (used when WordPress pretty permalinks are disabled)
+        $restRoute = isset($_REQUEST['rest_route'])
+            ? sanitize_text_field(wp_unslash($_REQUEST['rest_route']))
+            : '';
+
+        if ($restRoute !== '' && strpos($restRoute, $namespacePath) !== false) {
             return false;
         }
 
