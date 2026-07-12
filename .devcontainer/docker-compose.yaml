@@ -3,7 +3,7 @@ services:
     image: docker.io/mariadb:noble
     command: '--default-authentication-plugin=mysql_native_password'
     volumes:
-      - db_data:/var/lib/mysql
+      - db_data_simple_jwt_login:/var/lib/mysql
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: Wo4wZ3fE
@@ -27,5 +27,4 @@ services:
     volumes:
       - ../:/var/www/html/wp-content/plugins/simple-jwt-login
 volumes:
-  db_data:
-  wordpress:
+  db_data_simple_jwt_login:
